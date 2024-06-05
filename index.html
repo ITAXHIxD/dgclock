@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cool Time Display with Random Image</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: relative;
+    }
+
+    #time {
+      font-size: 5em;
+      margin-bottom: 20px;
+    }
+
+    #date {
+      font-size: 1.5em;
+      opacity: 0.7;
+    }
+
+    #random-image {
+      position: absolute;
+      width: 25%;
+      z-index: -1;
+      /* Ensure the sticker is behind date and time text */
+      transform: rotateZ(calc(90deg * var(--rotate-factor)));
+      /* Random angle */
+      --rotate-factor: 0;
+      /* Initial rotation factor */
+    }
+
+    /* Style for text that ensures visibility */
+    .visible-text {
+      color: white;
+      /* Default text color */
+      text-shadow: 0 0 2px black;
+      /* Shadow to improve visibility */
+    }
+  </style>
+</head>
+
+<body id="bg">
+
+  <div id="date" class="visible-text"></div>
+  <div id="time" class="visible-text"></div>
+  <img id="random-image" src="" alt="Random Image">
+
+  <script>
+    const images = [
+      'pngaaa.com-611375.png',
+      'pngaaa.com-611387.png',
+      'pngaaa.com-1233502.png',
+      'pngaaa.com-1233599.png',
+      'image_2024-06-05_163450069.png',
+      'image_2024-06-05_163530254.png',
+      'image_2024-06-05_163806422.png',
+      'pngaaa.com-1233548.png',
+      'pngaaa.com-1233652.png',
+      'pngaaa.com-170036.png',
+      'pngaaa.com-4309194.png',
+      'pngaaa.com-4309208.png',
+      'image.png',
+      'image1.png'
+    ];
+
+    // Function to get a random index different from the stored one
+    function getRandomIndex(currentIndex, maxIndex) {
+      let randomIndex = Math.floor(Math.random() * maxIndex);
+      while (randomIndex === currentIndex) {
+        randomIndex = Math.floor(Math.random() * maxIndex);
+      }
+      return randomIndex;
+    }
+
+    // Function to update the date, time, and background image
+    function updateTime() {
+      const now = new Date(); // Get the current date and time
+
+      // Extract date components
+      const day = now.getDate();
+      const month = now.getMonth() + 1;
+      const year = now.getFullYear();
+      const dayOfWeek = now.toLocaleDateString('en', {
+        weekday: 'long'
+      });
+
+      // Format the date as a string
+      const dateString = `${dayOfWeek}, ${month}/${day}/${year}`;
+      document.getElementById('date').innerText = dateString;
+
+      // Extract time components
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      // Format the time as a string
+      const timeString = `${hours}:${minutes}:${seconds}`;
+      document.getElementById('time').innerText = timeString;
+
+      // Set the background image based on the time of day
+      let imageUrl;
+      if (hours >= 6 && hours < 12) { // Morning (6 AM to 12 PM)
+        imageUrl = 'morning.jpg';
+      } else if (hours >= 12 && hours < 16) { // Afternoon (12 PM to 4 PM)
+        imageUrl = 'afternoon.jpg';
+      } else if (hours >= 16 && hours < 20) { // Evening (4 PM to 8 PM)
+        imageUrl = 'evening.jpg';
+      } else { // Night (8 PM to 6 AM)
+        imageUrl = 'night.jpg';
+      }
+      document.body.style.backgroundImage = `url(${imageUrl})`;
+
+      // Get the stored random index from localStorage
+      let storedIndex = localStorage.getItem('randomIndex');
+      if (storedIndex === null) {
+        storedIndex = -1;
+      }
+
+      // Get a new random index different from the stored one
+      const randomIndex = getRandomIndex(parseInt(storedIndex), images.length);
+      localStorage.setItem('randomIndex', randomIndex);
+
+      // Set the random image
+      const randomImage = images[randomIndex];
+      const sticker = document.getElementById('random-image');
+      sticker.src = randomImage;
+
+      // Wait for the image to load before setting its position
+      sticker.onload = () => {
+        const stickerWidth = sticker.offsetWidth;
+        const stickerHeight = sticker.offsetHeight;
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        // Ensure the sticker doesn't go out of bounds
+        const maxTop = windowHeight - stickerHeight;
+        const maxLeft = windowWidth - stickerWidth;
+
+        sticker.style.top = `${Math.random() * maxTop}px`;
+        sticker.style.left = `${Math.random() * maxLeft}px`;
+
+        // Set random angle for the sticker
+        sticker.style.setProperty('--rotate-factor', Math.random());
+      };
+    }
+
+    // Initial call to update the date, time, and background image
+    updateTime();
+
+  </script>
+
+</body>
+
+</html>
