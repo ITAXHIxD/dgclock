@@ -14,6 +14,8 @@
       align-items: center;
       flex-direction: column;
       height: 100vh;
+      overflow: hidden;
+      /* Prevent scrolling */
       font-family: Arial, sans-serif;
       background-size: cover;
       background-repeat: no-repeat;
@@ -85,7 +87,7 @@
       'image_2024-06-05_163806422.png'
     ];
 
-    const angles = [70, 50, 30, 10, 270, 200, 250, 220]; 
+    const angles = [20, 30, 10, 50, 60, 0, -10, -20, -30, -50, -60];
 
     // Function to get a random index different from the stored one
     function getRandomIndex(currentIndex, maxIndex) {
@@ -155,15 +157,21 @@
 
       // Set random position for the sticker within the viewport
       const randomImageElement = document.getElementById('random-image');
-      const viewportHeight = window.innerHeight - randomImageElement.clientHeight;
-      const viewportWidth = window.innerWidth - randomImageElement.clientWidth;
+      randomImageElement.onload = () => {
+        const stickerWidth = randomImageElement.clientWidth;
+        const stickerHeight = randomImageElement.clientHeight;
+        const viewportHeight = window.innerHeight - stickerHeight;
+        const viewportWidth = window.innerWidth - stickerWidth;
 
-      randomImageElement.style.top = `${Math.random() * viewportHeight}px`;
-      randomImageElement.style.left = `${Math.random() * viewportWidth}px`;
+        const margin = 20; // margin to avoid touching the edge
 
-      // Set random angle for the sticker
-      const randomAngle = getRandomAngle(angles);
-      randomImageElement.style.setProperty('--rotate-angle', `${randomAngle}deg`);
+        randomImageElement.style.top = `${Math.random() * (viewportHeight - margin * 2) + margin}px`;
+        randomImageElement.style.left = `${Math.random() * (viewportWidth - margin * 2) + margin}px`;
+
+        // Set random angle for the sticker
+        const randomAngle = getRandomAngle(angles);
+        randomImageElement.style.setProperty('--rotate-angle', `${randomAngle}deg`);
+      };
     }
 
     // Initial call to update the date, time, and background image
