@@ -36,10 +36,10 @@
       width: 25%;
       z-index: -1;
       /* Ensure the sticker is behind date and time text */
-      transform: rotateZ(calc(90deg * var(--rotate-factor)));
+      transform: rotateZ(var(--rotate-angle));
       /* Random angle */
-      --rotate-factor: 0;
-      /* Initial rotation factor */
+      --rotate-angle: 0deg;
+      /* Initial rotation angle */
     }
 
     /* Style for text that ensures visibility */
@@ -79,8 +79,13 @@
       'image_2024-06-06_155850163.png',
       'image_2024-06-06_160015779.png',
       'image.png',
-      'image1.png'
+      'image1.png',
+      'image_2024-06-05_163450069.png',
+      'image_2024-06-05_163530254.png',
+      'image_2024-06-05_163806422.png'
     ];
+
+    const angles = [70, 50, 30, 10, 270, 200, 250, 220]; 
 
     // Function to get a random index different from the stored one
     function getRandomIndex(currentIndex, maxIndex) {
@@ -89,6 +94,11 @@
         randomIndex = Math.floor(Math.random() * maxIndex);
       }
       return randomIndex;
+    }
+
+    // Function to get a random angle from the predefined angles array
+    function getRandomAngle(angles) {
+      return angles[Math.floor(Math.random() * angles.length)];
     }
 
     // Function to update the date, time, and background image
@@ -120,11 +130,11 @@
       let imageUrl;
       if (hours >= 6 && hours < 12) { // Morning (6 AM to 12 PM)
         imageUrl = 'morning.jpg';
-      } else if (hours >= 12 && hours < 16) { // Afternoon (12 PM to 4 PM)
+      } else if (hours >= 12 && hours < 16) { // Afternoon (12 PM to 6 PM)
         imageUrl = 'afternoon.jpg';
-      } else if (hours >= 16 && hours < 20) { // Evening (4 PM to 8 PM)
+      } else if (hours >= 16 && hours < 20) { // Evening/Night (4 PM to 8 PM)
         imageUrl = 'evening.jpg';
-      } else { // Night (8 PM to 6 AM)
+      } else { //night (8 PM to 6 AM)
         imageUrl = 'night.jpg';
       }
       document.body.style.backgroundImage = `url(${imageUrl})`;
@@ -141,31 +151,23 @@
 
       // Set the random image
       const randomImage = images[randomIndex];
-      const sticker = document.getElementById('random-image');
-      sticker.src = randomImage;
+      document.getElementById('random-image').src = randomImage;
 
-      // Wait for the image to load before setting its position
-      sticker.onload = () => {
-        const stickerWidth = sticker.offsetWidth;
-        const stickerHeight = sticker.offsetHeight;
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
+      // Set random position for the sticker within the viewport
+      const randomImageElement = document.getElementById('random-image');
+      const viewportHeight = window.innerHeight - randomImageElement.clientHeight;
+      const viewportWidth = window.innerWidth - randomImageElement.clientWidth;
 
-        // Ensure the sticker doesn't go out of bounds
-        const maxTop = windowHeight - stickerHeight;
-        const maxLeft = windowWidth - stickerWidth;
+      randomImageElement.style.top = `${Math.random() * viewportHeight}px`;
+      randomImageElement.style.left = `${Math.random() * viewportWidth}px`;
 
-        sticker.style.top = `${Math.random() * maxTop}px`;
-        sticker.style.left = `${Math.random() * maxLeft}px`;
-
-        // Set random angle for the sticker
-        sticker.style.setProperty('--rotate-factor', Math.random());
-      };
+      // Set random angle for the sticker
+      const randomAngle = getRandomAngle(angles);
+      randomImageElement.style.setProperty('--rotate-angle', `${randomAngle}deg`);
     }
 
     // Initial call to update the date, time, and background image
     updateTime();
-
   </script>
 
 </body>
