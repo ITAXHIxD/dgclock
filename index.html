@@ -51,6 +51,24 @@
       text-shadow: 0 0 2px black;
       /* Shadow to improve visibility */
     }
+
+    #button-container {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .popup-image {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+    }
   </style>
 </head>
 
@@ -59,6 +77,9 @@
   <div id="date" class="visible-text"></div>
   <div id="time" class="visible-text"></div>
   <img id="random-image" src="" alt="Random Image">
+  <div id="button-container">
+    <button onclick="askName()">Click Me</button>
+  </div>
 
   <script>
     const images = [
@@ -93,8 +114,8 @@
     const specialDates = {
       "8-15": "independence_day.jpg", // Example: Independence Day (August 15)
       "1-1": "new_year.jpg", // Example: New Year (January 1)
-
       // Add more dates and their corresponding images here
+      "6-18": "birthday.jpg"
     };
 
     // Function to get a random index different from the stored one
@@ -188,11 +209,58 @@
       };
     }
 
+    // Function to prompt for the user's name and display pop-ups if the name is "mahi"
+    function askName() {
+      const name = prompt("Enter your name:");
+      if (name.toLowerCase() === "mahi") {
+        displayPopups();
+      }
+    }
+
+    // Function to display image pop-ups at random positions
+    function displayPopups() {
+      const popupImages = [
+        'popup1.png',
+        'popup2.png',
+        'popup3.png',
+        'popup4.png',
+        'popup5.png',
+        'popup6.png',
+        'popup7.png',
+        'popup8.png',
+        'popup9.gif',
+        'popuplast.png'
+      ];
+      let popupIndex = 0;
+
+      function showPopup() {
+        if (popupIndex >= popupImages.length) return;
+
+        const img = document.createElement('img');
+        img.src = popupImages[popupIndex];
+        img.className = 'popup-image';
+        document.body.appendChild(img);
+
+        const popupWidth = img.clientWidth;
+        const popupHeight = img.clientHeight;
+        const viewportHeight = window.innerHeight - popupHeight;
+        const viewportWidth = window.innerWidth - popupWidth;
+
+        img.style.top = `${Math.random() * viewportHeight}px`;
+        img.style.left = `${Math.random() * viewportWidth}px`;
+
+        popupIndex++;
+        setTimeout(showPopup, 3000);
+      }
+
+      showPopup();
+    }
+
     // Initial call to update the date, time, and background image
     updateTime();
-    // Update the time and background image every second
-  </script>
 
+
+  </script>
 </body>
 
 </html>
