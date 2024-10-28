@@ -22,28 +22,27 @@
       background-position: center;
       position: relative;
     }
-
     #time {
-      font-size: 5em;
-      margin-bottom: 20px;
+    font-size: 5em;
+    margin-bottom: 20px;
+    position: relative; /* This allows z-index to work */
+    z-index: 1; /* Higher than #random-image */
     }
 
     #date {
-      font-size: 1.5em;
-      opacity: 0.7;
+    font-size: 1.5em;
+    opacity: 0.7;
+    position: relative; /* This allows z-index to work */
+    z-index: 1; /* Higher than #random-image */
     }
 
     #random-image {
-      position: absolute;
-      width: 25%;
-      z-index: -1;
-      /* Ensure the sticker is behind date and time text */
-      transform: rotateZ(var(--rotate-angle));
-      /* Random angle */
-      --rotate-angle: 0deg;
-      /* Initial rotation angle*/
-      }
-
+    position: absolute;
+    width: 25%;
+    z-index: -1; /* Ensures it stays behind #time and #date */
+    transform: rotateZ(var(--rotate-angle));
+    --rotate-angle: 0deg; /* Initial rotation angle */
+    }
     /* Style for text that ensures visibility */
     .visible-text {
       color: white;
