@@ -15,7 +15,6 @@
       flex-direction: column;
       height: 100vh;
       overflow: hidden;
-      /* Prevent scrolling */
       font-family: Arial, sans-serif;
       background-size: cover;
       background-repeat: no-repeat;
@@ -23,32 +22,27 @@
       position: relative;
     }
     #time {
-    font-size: 5em;
-    margin-bottom: 20px;
-    position: relative; /* This allows z-index to work */
-    z-index: 1; /* Higher than #random-image */
+      font-size: 5em;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
     }
-
     #date {
-    font-size: 1.5em;
-    opacity: 0.7;
-    position: relative; /* This allows z-index to work */
-    z-index: 1; /* Higher than #random-image */
+      font-size: 1.5em;
+      opacity: 0.7;
+      position: relative;
+      z-index: 1;
     }
-
     #random-image {
-    position: absolute;
-    width: 25%;
-    z-index: -1; /* Ensures it stays behind #time and #date */
-    transform: rotateZ(var(--rotate-angle));
-    --rotate-angle: 0deg; /* Initial rotation angle */
+      position: absolute;
+      width: 25%;
+      z-index: -1;
+      transform: rotateZ(var(--rotate-angle));
+      --rotate-angle: 0deg;
     }
-    /* Style for text that ensures visibility */
     .visible-text {
       color: white;
-      /* Default text color */
       text-shadow: 0 0 2px black;
-      /* Shadow to improve visibility */
     }
   </style>
 </head>
@@ -61,33 +55,15 @@
 
   <script>
     const images = [
-      'pngaaa.com-611375.png',
-      'pngaaa.com-611387.png',
-      'pngaaa.com-1233502.png',
-      'pngaaa.com-1233599.png',
-      'pngaaa.com-1233548.png',
-      'pngaaa.com-1233652.png',
-      'pngaaa.com-170036.png',
-      'pngaaa.com-4309194.png',
-      'pngaaa.com-4309208.png',
-      'image_2024-06-05_163450069.png',
-      'image_2024-06-05_163530254.png',
-      'image_2024-06-05_163806422.png',
-      'image_2024-06-06_155251015.png',
-      'image_2024-06-06_155440849.png',
-      'image_2024-06-06_155558738.png',
-      'image_2024-06-06_155726876.png',
-      'image_2024-06-06_155850163.png',
-      'image_2024-06-06_160015779.png',
-      'image.png',
-      'image1.png',
-      'image_2024-06-05_163450069.png',
-      'image_2024-06-05_163530254.png',
-      'image_2024-06-05_163806422.png'
+      'pngaaa.com-611375.png', 'pngaaa.com-611387.png', 'pngaaa.com-1233502.png', 'pngaaa.com-1233599.png',
+      'pngaaa.com-1233548.png', 'pngaaa.com-1233652.png', 'pngaaa.com-170036.png', 'pngaaa.com-4309194.png',
+      'pngaaa.com-4309208.png', 'image_2024-06-05_163450069.png', 'image_2024-06-05_163530254.png',
+      'image_2024-06-05_163806422.png', 'image_2024-06-06_155251015.png', 'image_2024-06-06_155440849.png',
+      'image_2024-06-06_155558738.png', 'image_2024-06-06_155726876.png', 'image_2024-06-06_155850163.png',
+      'image_2024-06-06_160015779.png', 'image.png', 'image1.png', 'image_2024-06-05_163450069.png',
+      'image_2024-06-05_163530254.png', 'image_2024-06-05_163806422.png'
     ];
-
     const angles = [20, 30, 10, 50, 60, 0, -10, -20, -30, -50, -60];
-
     const specialDates = {
       "8-15": "independence_day.jpg",
       "1-1": "new_year.jpg",
@@ -107,7 +83,6 @@
 
     function updateTime() {
       const now = new Date();
-
       const day = now.getDate();
       const month = now.getMonth() + 1;
       const year = now.getFullYear();
@@ -165,3 +140,8 @@
 
     updateTime();
     setInterval(updateTime, 1000);
+  </script>
+
+</body>
+
+</html>
