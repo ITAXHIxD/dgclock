@@ -88,15 +88,11 @@
 
     const angles = [20, 30, 10, 50, 60, 0, -10, -20, -30, -50, -60];
 
-    // Dictionary for specific date backgrounds
     const specialDates = {
-      "8-15": "independence_day.jpg", // Example: Independence Day (August 15)
-      "1-1": "new_year.jpg", // Example: New Year (January 1)
-
-      // Add more dates and their corresponding images here
+      "8-15": "independence_day.jpg",
+      "1-1": "new_year.jpg",
     };
 
-    // Function to get a random index different from the stored one
     function getRandomIndex(currentIndex, maxIndex) {
       let randomIndex = Math.floor(Math.random() * maxIndex);
       while (randomIndex === currentIndex) {
@@ -105,93 +101,67 @@
       return randomIndex;
     }
 
-    // Function to get a random angle from the predefined angles array
     function getRandomAngle(angles) {
       return angles[Math.floor(Math.random() * angles.length)];
     }
 
-    // Function to update the date, time, and background image
     function updateTime() {
-      const now = new Date(); // Get the current date and time
+      const now = new Date();
 
-      // Extract date components
       const day = now.getDate();
       const month = now.getMonth() + 1;
       const year = now.getFullYear();
-      const dayOfWeek = now.toLocaleDateString('en', {
-        weekday: 'long'
-      });
-
-      // Format the date as a string
+      const dayOfWeek = now.toLocaleDateString('en', { weekday: 'long' });
       const dateString = `${dayOfWeek}, ${month}/${day}/${year}`;
       document.getElementById('date').innerText = dateString;
 
-      // Extract time components
       const hours = now.getHours();
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
-
-      // Format the time as a string
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
       const timeString = `${hours}:${minutes}:${seconds}`;
       document.getElementById('time').innerText = timeString;
 
-      // Check if today is a special date
       const dateKey = `${month}-${day}`;
       if (specialDates[dateKey]) {
         document.body.style.backgroundImage = `url(${specialDates[dateKey]})`;
       } else {
-        // Set the background image based on the time of day
         let imageUrl;
-        if (hours >= 6 && hours < 12) { // Morning (6 AM to 12 PM)
+        if (hours >= 6 && hours < 12) {
           imageUrl = 'morning.jpg';
-        } else if (hours >= 12 && hours < 16) { // Afternoon (12 PM to 6 PM)
+        } else if (hours >= 12 && hours < 16) {
           imageUrl = 'afternoon.jpg';
-        } else if (hours >= 16 && hours < 20) { // Evening/Night (4 PM to 8 PM)
+        } else if (hours >= 16 && hours < 20) {
           imageUrl = 'evening.jpg';
-        } else { // Night (8 PM to 6 AM)
+        } else {
           imageUrl = 'night.jpg';
         }
         document.body.style.backgroundImage = `url(${imageUrl})`;
       }
 
-      // Get the stored random index from localStorage
       let storedIndex = localStorage.getItem('randomIndex');
       if (storedIndex === null) {
         storedIndex = -1;
       }
-
-      // Get a new random index different from the stored one
       const randomIndex = getRandomIndex(parseInt(storedIndex), images.length);
       localStorage.setItem('randomIndex', randomIndex);
-
-      // Set the random image
       const randomImage = images[randomIndex];
       document.getElementById('random-image').src = randomImage;
 
-      // Set random position for the sticker within the viewport
       const randomImageElement = document.getElementById('random-image');
       randomImageElement.onload = () => {
         const stickerWidth = randomImageElement.clientWidth;
         const stickerHeight = randomImageElement.clientHeight;
         const viewportHeight = window.innerHeight - stickerHeight;
         const viewportWidth = window.innerWidth - stickerWidth;
-
-        const margin = 20; // margin to avoid touching the edge
+        const margin = 20;
 
         randomImageElement.style.top = `${Math.random() * (viewportHeight - margin * 2) + margin}px`;
         randomImageElement.style.left = `${Math.random() * (viewportWidth - margin * 2) + margin}px`;
 
-        // Set random angle for the sticker
         const randomAngle = getRandomAngle(angles);
         randomImageElement.style.setProperty('--rotate-angle', `${randomAngle}deg`);
       };
     }
 
-    // Initial call to update the date, time, and background image
     updateTime();
-    // Update the time and background image every second
-  </script>
-
-</body>
-
-</html>
+    setInterval(updateTime, 1000);
