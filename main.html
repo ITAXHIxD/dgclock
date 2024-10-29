@@ -111,18 +111,12 @@
     <div id="margin-container">
         <div id="date" class="dynamic-text"></div>
         <div id="time" class="dynamic-text"></div>
-        <div id="random-message"></div> <!-- Random message element -->
-        <img id="random-image" src="" alt="Random Image"> <!-- Set source dynamically -->
+        <div id="random-message">{{ random_message }}</div> <!-- Message is passed from Flask -->
+        <img id="random-image" src="{{ url_for('static', filename='popup_images/' + random_image) }}" alt="Random Image">
     </div>
     <script>
-        const messages = [
-            "Did you know this is created by a 16 year old boy with ChatGPT?",
-            "This background changes according to time.",
-            "Refreshing the website will give a different popup image.",
-            "Is this website useful?",
-            "What's the time, bro?",
-            "One Piece is real."
-        ];
+        const angles = [20, 30, 10, 50, 60, 0, -10, -20, -30, -50, -60];
+        let isWhiteText = true;
 
         function updateTime() {
             const now = new Date();
@@ -134,49 +128,31 @@
 
             let imageUrl;
             if (now.getHours() >= 6 && now.getHours() < 12) {
-                imageUrl = 'static/morning.jpg';  // Morning image path
+                imageUrl = 'static/morning.jpg';
             } else if (now.getHours() >= 12 && now.getHours() < 16) {
-                imageUrl = 'static/afternoon.jpg';  // Afternoon image path
+                imageUrl = 'static/afternoon.jpg';
             } else if (now.getHours() >= 16 && now.getHours() < 20) {
-                imageUrl = 'static/evening.jpg';  // Evening image path
+                imageUrl = 'static/evening.jpg';
             } else {
-                imageUrl = 'static/night.jpg';  // Night image path
+                imageUrl = 'static/night.jpg';
             }
             document.body.style.backgroundImage = `url(${imageUrl})`;
-
-            // Set a random message
-            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-            document.getElementById('random-message').innerText = randomMessage;
-
-            // Set random image (optional, if you have images)
-            setRandomImage();
         }
 
         function toggleTextColor() {
             const textElements = document.querySelectorAll('.dynamic-text, #random-message');
-            const isWhiteText = document.getElementById('toggle-button').checked;
+            isWhiteText = !isWhiteText;
             const newColor = isWhiteText ? 'white' : 'black';
             textElements.forEach(element => {
-                element.style.color = newColor; // Change color
+                element.style.color = newColor;
             });
             document.getElementById('mode-label').innerText = isWhiteText ? 'Dark Mode OFF' : 'Dark Mode ON';
-            document.getElementById('mode-label').style.color = newColor; // Change label color
-        }
-
-        function setRandomImage() {
-            const randomImageElement = document.getElementById('random-image');
-            const imagePaths = [
-                'static/image1.jpg',
-                'static/image2.jpg',
-                'static/image3.jpg'
-                // Add more image paths here
-            ];
-            const randomImage = imagePaths[Math.floor(Math.random() * imagePaths.length)];
-            randomImageElement.src = randomImage; // Set random image
+            document.getElementById('mode-label').style.color = newColor;
         }
 
         updateTime();
         setInterval(updateTime, 1000);
+
         document.getElementById('toggle-button').addEventListener('change', toggleTextColor);
     </script>
 </body>
