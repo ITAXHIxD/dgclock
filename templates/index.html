@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Time & Background</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden; /* Prevent scrolling */
+            font-family: Arial, sans-serif;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            transition: background-image 0.5s; /* Smooth transition for background image */
+        }
+        #margin-container {
+            position: relative;
+            width: calc(100% - 40px); /* Adjust for margin */
+            height: calc(100% - 40px); /* Adjust for margin */
+            margin: 20px; /* Set a margin around the entire container */
+            overflow: hidden; /* Prevent overflow */
+            display: flex;
+            justify-content: center; /* Center elements horizontally */
+            align-items: center; /* Center elements vertically */
+            flex-direction: column; /* Stack elements vertically */
+        }
+        .dynamic-text {
+            font-size: 5em;
+            margin: 10px 0; /* Space between time and date */
+            text-shadow: 0 0 2px black;
+            white-space: nowrap; /* Prevent text wrapping */
+            color: white; /* Default text color */
+            transition: color 0.5s; /* Smooth transition for color change */
+        }
+        #random-message {
+            font-size: 1.2em; /* Adjust the font size for the message */
+            opacity: 0.8; /* Slightly transparent */
+            margin-top: 10px; /* Space between date/time and message */
+            color: white; /* Default message color */
+            transition: color 0.5s; /* Smooth transition for color change */
+        }
+        #random-image {
+            position: absolute;
+            width: 25%; /* Adjust the size as needed */
+            max-width: 200px; /* Set a max width for better control */
+            z-index: -1; /* Place behind text */
+            transform: rotateZ(var(--rotate-angle));
+            --rotate-angle: 0deg;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin-bottom: 20px; /* Space below the switch */
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        #mode-label {
+            font-size: 1.2em; /* Adjust label font size */
+            color: white; /* Default label color */
+            margin-bottom: 10px; /* Space below the label */
+            transition: color 0.5s; /* Smooth transition for color change */
+        }
+    </style>
+</head>
+<body id="bg">
+    <label id="mode-label">Dark Mode OFF</label>
+    <label class="switch">
+        <input type="checkbox" id="toggle-button">
+        <span class="slider"></span>
+    </label>
+    <div id="margin-container">
+        <div id="date" class="dynamic-text">{{ date }}</div>
+        <div id="time" class="dynamic-text">{{ time }}</div>
+        <div id="random-message">{{ random_message }}</div> <!-- Random message element -->
+        <img id="random-image" src="{{ url_for('static', filename='popup_images/' + random_image) }}" alt="Random Image">
+    </div>
+    <script>
+        const angles = [20, 30, 10, 50, 60, 0, -10, -20, -30, -50, -60];
+        let isWhiteText = true; // Track current text color state
+
+        function updateTime() {
+            const now = new Date();
+            const dayOfWeek = now.toLocaleDateString('en', { weekday: 'long' });
+            const dateString = `${dayOfWeek}, ${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`;
+            const timeString = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+            document.getElementById('date').innerText = dateString;
+            document.getElementById('time').innerText = timeString;
+
+            let imageUrl;
+            if (now.getHours() >= 6 && now.getHours() < 12) {
+                imageUrl = 'static/morning.jpg';  // Morning image path
+            } else if (now.getHours() >= 12 && now.getHours() < 16) {
+                imageUrl = 'static/afternoon.jpg';  // Afternoon image path
+            } else if (now.getHours() >= 16 && now.getHours() < 20) {
+                imageUrl = 'static/evening.jpg';  // Evening image path
+            } else {
+                imageUrl = 'static/night.jpg';  // Night image path
+            }
+            document.body.style.backgroundImage = `url(${imageUrl})`;
+        }
+
+        function toggleTextColor() {
+            const textElements = document.querySelectorAll('.dynamic-text, #random-message');
+            isWhiteText = !isWhiteText; // Toggle the state
+            const newColor = isWhiteText ? 'white' : 'black';
+            textElements.forEach(element => {
+                element.style.color = newColor; // Change color
+            });
+            document.getElementById('mode-label').innerText = isWhiteText ? 'Dark Mode OFF' : 'Dark Mode ON';
+            document.getElementById('mode-label').style.color = isWhiteText ? 'white' : 'black'; // Change label color
+        }
+
+        function setRandomImage() {
+            const randomImageElement = document.getElementById('random-image');
+            const stickerWidth = randomImageElement.offsetWidth; // Get the actual width of the image
+            const stickerHeight = randomImageElement.offsetHeight; // Get the actual height of the image
+            
+            const containerHeight = document.getElementById('margin-container').offsetHeight;
+            const containerWidth = document.getElementById('margin-container').offsetWidth;
+            const margin = 50; // Margin around the image
+
+            // Calculate positions to ensure the image stays fully within the container
+            const topPosition = Math.random() * (containerHeight - stickerHeight - margin * 5) + margin;
+            const leftPosition = Math.random() * (containerWidth - stickerWidth - margin * 2) + margin;
+
+            const randomAngle = angles[Math.floor(Math.random() * angles.length)];
+
+            randomImageElement.style.top = `${topPosition}px`;
+            randomImageElement.style.left = `${leftPosition}px`;
+            randomImageElement.style.setProperty('--rotate-angle', `${randomAngle}deg`);
+        }
+
+        updateTime();
+        setRandomImage();
+        setInterval(updateTime, 1000);
+
+        document.getElementById('toggle-button').addEventListener('change', toggleTextColor);
+    </script>
+</body>
+</html>
