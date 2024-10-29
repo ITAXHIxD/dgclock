@@ -109,14 +109,20 @@
         <span class="slider"></span>
     </label>
     <div id="margin-container">
-        <div id="date" class="dynamic-text">{{ date }}</div>
-        <div id="time" class="dynamic-text">{{ time }}</div>
-        <div id="random-message">{{ random_message }}</div> <!-- Random message element -->
-        <img id="random-image" src="{{ url_for('static', filename='popup_images/' + random_image) }}" alt="Random Image">
+        <div id="date" class="dynamic-text"></div>
+        <div id="time" class="dynamic-text"></div>
+        <div id="random-message"></div> <!-- Random message element -->
+        <img id="random-image" src="" alt="Random Image"> <!-- Set source dynamically -->
     </div>
     <script>
-        const angles = [20, 30, 10, 50, 60, 0, -10, -20, -30, -50, -60];
-        let isWhiteText = true; // Track current text color state
+        const messages = [
+            "Did you know this is created by a 16 year old boy with ChatGPT?",
+            "This background changes according to time.",
+            "Refreshing the website will give a different popup image.",
+            "Is this website useful?",
+            "What's the time, bro?",
+            "One Piece is real."
+        ];
 
         function updateTime() {
             const now = new Date();
@@ -137,43 +143,40 @@
                 imageUrl = 'static/night.jpg';  // Night image path
             }
             document.body.style.backgroundImage = `url(${imageUrl})`;
+
+            // Set a random message
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            document.getElementById('random-message').innerText = randomMessage;
+
+            // Set random image (optional, if you have images)
+            setRandomImage();
         }
 
         function toggleTextColor() {
             const textElements = document.querySelectorAll('.dynamic-text, #random-message');
-            isWhiteText = !isWhiteText; // Toggle the state
+            const isWhiteText = document.getElementById('toggle-button').checked;
             const newColor = isWhiteText ? 'white' : 'black';
             textElements.forEach(element => {
                 element.style.color = newColor; // Change color
             });
             document.getElementById('mode-label').innerText = isWhiteText ? 'Dark Mode OFF' : 'Dark Mode ON';
-            document.getElementById('mode-label').style.color = isWhiteText ? 'white' : 'black'; // Change label color
+            document.getElementById('mode-label').style.color = newColor; // Change label color
         }
 
         function setRandomImage() {
             const randomImageElement = document.getElementById('random-image');
-            const stickerWidth = randomImageElement.offsetWidth; // Get the actual width of the image
-            const stickerHeight = randomImageElement.offsetHeight; // Get the actual height of the image
-            
-            const containerHeight = document.getElementById('margin-container').offsetHeight;
-            const containerWidth = document.getElementById('margin-container').offsetWidth;
-            const margin = 50; // Margin around the image
-
-            // Calculate positions to ensure the image stays fully within the container
-            const topPosition = Math.random() * (containerHeight - stickerHeight - margin * 5) + margin;
-            const leftPosition = Math.random() * (containerWidth - stickerWidth - margin * 2) + margin;
-
-            const randomAngle = angles[Math.floor(Math.random() * angles.length)];
-
-            randomImageElement.style.top = `${topPosition}px`;
-            randomImageElement.style.left = `${leftPosition}px`;
-            randomImageElement.style.setProperty('--rotate-angle', `${randomAngle}deg`);
+            const imagePaths = [
+                'static/image1.jpg',
+                'static/image2.jpg',
+                'static/image3.jpg'
+                // Add more image paths here
+            ];
+            const randomImage = imagePaths[Math.floor(Math.random() * imagePaths.length)];
+            randomImageElement.src = randomImage; // Set random image
         }
 
         updateTime();
-        setRandomImage();
         setInterval(updateTime, 1000);
-
         document.getElementById('toggle-button').addEventListener('change', toggleTextColor);
     </script>
 </body>
