@@ -87,9 +87,11 @@
         <div id="random-message" class="dynamic-text"></div>
         <img id="random-image" src="" alt="Random Image" />
     </div>
-
     <script>
-        // Variables for messages, images, angles, and state
+        const angles = [20, 30, 10, 50, 60, 0, -10, -20, -30, -50, -60];
+        let isWhiteText = true;
+    
+        // Array of messages
         const messages = [
             "Did you know this is created by a 16-year-old boy with ChatGPT?",
             "This background changes according to time!",
@@ -98,53 +100,55 @@
             "What's the time, bro?",
             "One Piece is real"
         ];
-        
+    
+        // Array of image paths (including your provided images)
         const images = [
-             "static/popup_images/image_2024-06-05_163450069.png",
-             "static/popup_images/image_2024-06-05_163530254.png",
-             "static/popup_images/image_2024-06-05_163806422.png",
-             "static/popup_images/image_2024-06-06_155440849.png",
-             "static/popup_images/image_2024-06-06_155251015.png",
-             "static/popup_images/image_2024-06-06_155726876.png",
-             "static/popup_images/image_2024-06-06_155558738.png",
-             "static/popup_images/image_2024-06-06_155850163.png",
-             "static/popup_images/image_2024-06-06_160015779.png",
-             "static/popup_images/image.png",
-             "static/popup_images/image1.png",
-             "static/popup_images/pngaaa.com-170036.png",
-             "static/popup_images/pngaaa.com-611347.png",
-             "static/popup_images/pngaaa.com-611375.png",
-             "static/popup_images/pngaaa.com-611387.png",
-             "static/popup_images/pngaaa.com-1233548.png",
-             "static/popup_images/pngaaa.com-1233502.png",
-             "static/popup_images/pngaaa.com-1233652.png",
-             "static/popup_images/pngaaa.com-1233599.png",
-             "static/popup_images/pngaaa.com-4309208.png",
-             "static/popup_images/pngaaa.com-4309194.png"
+            "static/popup_images/image_2024-06-05_163450069.png",
+            "static/popup_images/image_2024-06-05_163530254.png",
+            "static/popup_images/image_2024-06-05_163806422.png",
+            "static/popup_images/image_2024-06-06_155440849.png",
+            "static/popup_images/image_2024-06-06_155251015.png",
+            "static/popup_images/image_2024-06-06_155726876.png",
+            "static/popup_images/image_2024-06-06_155558738.png",
+            "static/popup_images/image_2024-06-06_155850163.png",
+            "static/popup_images/image_2024-06-06_160015779.png",
+            "static/popup_images/image.png",
+            "static/popup_images/image1.png",
+            "static/popup_images/pngaaa.com-170036.png",
+            "static/popup_images/pngaaa.com-611347.png",
+            "static/popup_images/pngaaa.com-611375.png",
+            "static/popup_images/pngaaa.com-611387.png",
+            "static/popup_images/pngaaa.com-1233548.png",
+            "static/popup_images/pngaaa.com-1233502.png",
+            "static/popup_images/pngaaa.com-1233652.png",
+            "static/popup_images/pngaaa.com-1233599.png",
+            "static/popup_images/pngaaa.com-4309208.png",
+            "static/popup_images/pngaaa.com-4309194.png"
         ];
-
-
-        let isWhiteText = true;
-
-        // Preload images
-        images.forEach(src => {
-            const img = new Image();
-            img.src = src;
-        });
-
+    
         function setRandomMessageAndImage() {
+            // Set random message
             const randomMessage = messages[Math.floor(Math.random() * messages.length)];
             document.getElementById('random-message').innerText = randomMessage;
-
+    
+            // Set random image source
             const randomImage = images[Math.floor(Math.random() * images.length)];
-            const imageElement = document.getElementById('random-image');
-            imageElement.style.opacity = 0;
-            setTimeout(() => {
-                imageElement.src = randomImage;
-                imageElement.style.opacity = 1;
-            }, 200);
+            const randomImageElement = document.getElementById('random-image');
+            randomImageElement.src = randomImage;
+    
+            // Position and rotate image randomly within the margin container
+            const marginContainer = document.getElementById('margin-container');
+            const containerWidth = marginContainer.clientWidth - 100; // Account for image width
+            const containerHeight = marginContainer.clientHeight - 100; // Account for image height
+            const randomX = Math.floor(Math.random() * containerWidth);
+            const randomY = Math.floor(Math.random() * containerHeight);
+            const randomAngle = angles[Math.floor(Math.random() * angles.length)];
+    
+            randomImageElement.style.left = `${randomX}px`;
+            randomImageElement.style.top = `${randomY}px`;
+            randomImageElement.style.transform = `rotate(${randomAngle}deg)`;
         }
-
+    
         function updateTime() {
             const now = new Date();
             const dayOfWeek = now.toLocaleDateString('en', { weekday: 'long' });
@@ -152,20 +156,20 @@
             const timeString = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
             document.getElementById('date').innerText = dateString;
             document.getElementById('time').innerText = timeString;
-
+    
             let imageUrl;
             if (now.getHours() >= 6 && now.getHours() < 12) {
-                imageUrl = 'static/morning.jpg';
+                imageUrl = 'static/morning.jpg';  // Morning image path
             } else if (now.getHours() >= 12 && now.getHours() < 16) {
-                imageUrl = 'static/afternoon.jpg';
+                imageUrl = 'static/afternoon.jpg';  // Afternoon image path
             } else if (now.getHours() >= 16 && now.getHours() < 20) {
-                imageUrl = 'static/evening.jpg';
+                imageUrl = 'static/evening.jpg';  // Evening image path
             } else {
-                imageUrl = 'static/night.jpg';
+                imageUrl = 'static/night.jpg';  // Night image path
             }
             document.body.style.backgroundImage = `url(${imageUrl})`;
         }
-
+    
         function toggleTextColor() {
             const textElements = document.querySelectorAll('.dynamic-text, #random-message');
             isWhiteText = !isWhiteText;
@@ -176,15 +180,16 @@
             document.getElementById('mode-label').innerText = isWhiteText ? 'Dark Mode OFF' : 'Dark Mode ON';
             document.getElementById('mode-label').style.color = newColor;
         }
-
-        // Initialize and set intervals
+    
         updateTime();
         setRandomMessageAndImage();
-
-        setInterval(updateTime, 1000);
-        setInterval(setRandomMessageAndImage, 10000);
-
+    
+        // Set intervals for updating time and random message/image
+        setInterval(updateTime, 1000); // Update time and background every second
+        setInterval(setRandomMessageAndImage, 10000); // Update message and image every 10 seconds
+    
+        // Event listener for toggling text color
         document.getElementById('toggle-button').addEventListener('change', toggleTextColor);
-    </script>
+    </script>    
 </body>
 </html>
