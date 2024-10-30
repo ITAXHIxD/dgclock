@@ -87,7 +87,10 @@
         #margin-container {
             text-align: center;
             position: relative;
-            /* Add margin for the dark mode button */
+            display: flex; /* Use flexbox for centering */
+            flex-direction: column; /* Stack elements vertically */
+            justify-content: center; /* Center elements vertically */
+            align-items: center; /* Center elements horizontally */
             border: none; /* Remove border */
             width: 1000px; /* Full width */
             max-width: 1000px; /* Maximum width */
@@ -100,7 +103,6 @@
             height: auto; /* Maintain aspect ratio */
             max-height: 300px; /* Limit max height to 300px */
             transition: transform 0.3s; /* Transition for rotation */
-            /* Make the image center itself */
             left: 0%;
             top: 50%;
             transform: translate(-50%, -50%); /* Centering adjustment */
