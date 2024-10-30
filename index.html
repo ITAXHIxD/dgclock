@@ -26,6 +26,18 @@
             transition: color 0.3s;
         }
 
+        #time, #date {
+            font-size: 2.5rem; /* Increase font size for date and time */
+            margin: 0; /* Remove margin for better alignment */
+        }
+
+        .dark-mode-container {
+            position: absolute; /* Position it at the top */
+            top: 20px; /* Adjust vertical position */
+            text-align: center;
+            z-index: 1; /* Ensure it is on top */
+        }
+
         .switch {
             position: relative;
             display: inline-block;
@@ -75,7 +87,7 @@
         #margin-container {
             text-align: center;
             position: relative;
-            margin-top: 20px;
+            margin-top: 60px; /* Add margin for the dark mode button */
         }
 
         #random-image {
@@ -83,6 +95,9 @@
             max-width: 100px;
             max-height: 100px;
             transition: transform 0.3s; /* Transition for rotation */
+            bottom: 10px; /* Position it towards the bottom */
+            left: 50%; /* Center it horizontally */
+            transform: translateX(-50%); /* Adjust for centering */
         }
     </style>
 </head>
@@ -98,8 +113,8 @@
         <div id="date" class="dynamic-text"></div>
         <div id="time" class="dynamic-text"></div>
         <div id="random-message" class="dynamic-text"></div>
-        <img id="random-image" src="" alt="Random Image" />
     </div>
+    <img id="random-image" src="" alt="Random Image" />
     <script>
         const angles = [20, 30, 10, 50, 60, 0, -10, -20, -30, -50, -60];
         let isWhiteText = true;
@@ -130,14 +145,11 @@
             // Position the random image randomly within the container
             const marginContainer = document.getElementById('margin-container');
             const containerWidth = marginContainer.clientWidth;
-            const containerHeight = marginContainer.clientHeight;
 
             const randomX = Math.random() * (containerWidth - 100); // Adjust width for positioning
-            const randomY = Math.random() * (containerHeight - 100); // Adjust height for positioning
             const randomAngle = angles[Math.floor(Math.random() * angles.length)];
 
             randomImageElement.style.left = `${randomX}px`;
-            randomImageElement.style.top = `${randomY}px`;
             randomImageElement.style.transform = `rotate(${randomAngle}deg)`;
         }
 
