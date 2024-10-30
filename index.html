@@ -25,7 +25,7 @@
 
         .dynamic-text, #random-message {
             transition: color 0.3s;
-            z-index: 2; /* Ensure text is above the random image */
+            z-index: 1; /* Ensure text is above the random image */
             position: relative; /* Keep text above the image */
         }
 
@@ -38,7 +38,7 @@
             position: absolute; /* Position it at the top */
             top: 20px; /* Adjust vertical position */
             text-align: center;
-            z-index: 3; /* Ensure it is on top */
+            z-index: 1; /* Ensure it is on top */
         }
 
         .switch {
@@ -107,7 +107,7 @@
             height: auto; /* Maintain aspect ratio */
             max-height: 300px; /* Limit max height to 300px */
             transition: transform 0.3s; /* Transition for rotation */
-            z-index: 1; /* Keep image behind text */
+            z-index: -1; /* Keep image behind text */
         }
 
     </style>
