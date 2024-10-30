@@ -86,22 +86,19 @@
 
         #margin-container {
             text-align: center;
-            position: relative;
-             /* Add margin for the dark mode button */
-            border: 2px solid white; /* Add border for visibility */
-            width: 1000px; /* Full width */
+            position: relative; /* Maintain relative positioning */
+            border: none; /* Remove border visibility */
+            width: calc(100vw - 20px); /* Full width minus some pixels */
             max-width: 1000px; /* Maximum width */
-            height: 750px /* Fixed height for the container */
-            
+            height: calc(100vh - 20px); /* Full height minus some pixels */
         }
 
         #random-image {
             position: absolute;
-            max-width: 20%; /* Limit max width to container */
-            max-height: 20%; /* Limit max height to container */
+            max-width: 80%; /* Limit max width to 80% of the container */
+            max-height: 80%; /* Limit max height to 80% of the container */
             transition: transform 0.3s; /* Transition for rotation */
-            /* Make the image center itself */
-            left: 0%;
+            left: 50%;
             top: 50%;
             transform: translate(-50%, -50%); /* Centering adjustment */
         }
