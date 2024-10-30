@@ -86,22 +86,25 @@
 
         #margin-container {
             text-align: center;
-            position: relative; /* Maintain relative positioning */
-            border: none; /* Remove border visibility */
-            width: calc(100vw - 20px); /* Full width minus some pixels */
+            position: relative;
+            /* Add margin for the dark mode button */
+            border: none; /* Remove border */
+            width: 1000px; /* Full width */
             max-width: 1000px; /* Maximum width */
-            height: calc(100vh - 20px); /* Full height minus some pixels */
+            height: 750px; /* Fixed height for the container */
         }
-
+        
         #random-image {
             position: absolute;
-            max-width: 80%; /* Limit max width to 80% of the container */
-            max-height: 80%; /* Limit max height to 80% of the container */
+            max-width: 90%; /* Limit max width to 90% of the container */
+            max-height: 90%; /* Limit max height to 90% of the container */
             transition: transform 0.3s; /* Transition for rotation */
-            left: 50%;
+            /* Make the image center itself */
+            left: 0%;
             top: 50%;
             transform: translate(-50%, -50%); /* Centering adjustment */
         }
+
     </style>
 </head>
 <body id="bg">
