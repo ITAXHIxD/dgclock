@@ -74,15 +74,15 @@
 
         #margin-container {
             text-align: center;
-            position: relative; /* Allow absolute positioning of children */
+            position: relative;
             margin-top: 20px;
         }
 
         #random-image {
             position: absolute;
-            max-width: 100px; /* Set a max-width to ensure it fits */
-            max-height: 100px; /* Set a max-height to ensure it fits */
-            transition: transform 0.3s; /* Add transition for rotation */
+            max-width: 100px;
+            max-height: 100px;
+            transition: transform 0.3s; /* Transition for rotation */
         }
     </style>
 </head>
@@ -127,6 +127,7 @@
             const randomImageElement = document.getElementById('random-image');
             randomImageElement.src = randomImage;
 
+            // Position the random image randomly within the container
             const marginContainer = document.getElementById('margin-container');
             const containerWidth = marginContainer.clientWidth;
             const containerHeight = marginContainer.clientHeight;
@@ -135,11 +136,9 @@
             const randomY = Math.random() * (containerHeight - 100); // Adjust height for positioning
             const randomAngle = angles[Math.floor(Math.random() * angles.length)];
 
-            setTimeout(() => {
-                randomImageElement.style.left = `${randomX}px`;
-                randomImageElement.style.top = `${randomY}px`;
-                randomImageElement.style.transform = `rotate(${randomAngle}deg)`;
-            }, 100);
+            randomImageElement.style.left = `${randomX}px`;
+            randomImageElement.style.top = `${randomY}px`;
+            randomImageElement.style.transform = `rotate(${randomAngle}deg)`;
         }
 
         function updateTime() {
@@ -151,6 +150,7 @@
             document.getElementById('date').innerText = dateString;
             document.getElementById('time').innerText = timeString;
 
+            // Set background image based on the current time
             let imageUrl;
             if (now.getHours() >= 6 && now.getHours() < 12) {
                 imageUrl = 'static/morning.jpg';
@@ -175,12 +175,14 @@
             document.getElementById('mode-label').style.color = newColor;
         }
 
+        // Initialize time and random message/image on page load
         updateTime();
         setRandomMessageAndImage();
 
         setInterval(updateTime, 1000);
         setInterval(setRandomMessageAndImage, 10000);
 
+        // Event listener for toggling text color
         document.getElementById('toggle-button').addEventListener('change', toggleTextColor);
     </script>
 </body>
