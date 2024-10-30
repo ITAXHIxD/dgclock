@@ -83,8 +83,12 @@
 
         updateTime();
         setRandomMessageAndImage();
-        setInterval(updateTime, 1000);
 
+        // Set intervals for updating time and random message/image
+        setInterval(updateTime, 1000); // Update time and background every second
+        setInterval(setRandomMessageAndImage, 10000); // Update message and image every 10 seconds
+
+        // Event listener for toggling text color
         document.getElementById('toggle-button').addEventListener('change', toggleTextColor);
     </script>
 </body>
