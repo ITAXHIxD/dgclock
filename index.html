@@ -20,10 +20,13 @@
             background-position: center;
             transition: background-image 0.5s ease-in-out;
             color: white;
+            position: relative; /* Make the body position relative for absolute positioning of the image */
         }
 
         .dynamic-text, #random-message {
             transition: color 0.3s;
+            z-index: 2; /* Ensure text is above the random image */
+            position: relative; /* Keep text above the image */
         }
 
         #time, #date {
@@ -35,7 +38,7 @@
             position: absolute; /* Position it at the top */
             top: 20px; /* Adjust vertical position */
             text-align: center;
-            z-index: 1; /* Ensure it is on top */
+            z-index: 3; /* Ensure it is on top */
         }
 
         .switch {
@@ -85,7 +88,7 @@
         }
 
         #margin-container {
-            text-align: center;
+            text-align:center;
             position: relative;
             display: flex; /* Use flexbox for centering */
             flex-direction: column; /* Stack elements vertically */
@@ -93,21 +96,18 @@
             align-items: center; /* Center elements horizontally */
             border: none; /* Remove border */
             width: 100%; /* Full width */
-            height: 100vh; /* Full height to center vertically */
             max-width: 1000px; /* Maximum width */
-            text-shadow: black;
+            height: 750px; /* Fixed height for the container */
+            text-shadow:black;
         }
 
-
         #random-image {
-            position: absolute;
+            position: absolute; /* Position it absolutely to the viewport */
             width: 300px; /* Set a fixed width for the image */
             height: auto; /* Maintain aspect ratio */
             max-height: 300px; /* Limit max height to 300px */
             transition: transform 0.3s; /* Transition for rotation */
-            left: 0%;
-            top: 50%;
-            transform: translate(-50%, -50%); /* Centering adjustment */
+            z-index: 1; /* Keep image behind text */
         }
 
     </style>
@@ -153,13 +153,12 @@
             const randomImageElement = document.getElementById('random-image');
             randomImageElement.src = randomImage;
 
-            // Position the random image randomly within the container
-            const marginContainer = document.getElementById('margin-container');
-            const containerWidth = marginContainer.clientWidth;
-            const containerHeight = marginContainer.clientHeight;
+            // Position the random image randomly within the viewport
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
 
-            const randomX = Math.random() * (containerWidth - 200); // Adjust width for positioning
-            const randomY = Math.random() * (containerHeight - 200); // Adjust height for positioning
+            const randomX = Math.random() * (windowWidth - 200); // Adjust width for positioning
+            const randomY = Math.random() * (windowHeight - 200); // Adjust height for positioning
             const randomAngle = angles[Math.floor(Math.random() * angles.length)];
 
             randomImageElement.style.left = `${randomX}px`;
