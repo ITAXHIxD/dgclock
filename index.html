@@ -93,11 +93,12 @@
             max-width: 1000px; /* Maximum width */
             height: 750px; /* Fixed height for the container */
         }
-        
+
         #random-image {
             position: absolute;
-            max-width: 90%; /* Limit max width to 90% of the container */
-            max-height: 90%; /* Limit max height to 90% of the container */
+            width: 300px; /* Set a fixed width for the image */
+            height: auto; /* Maintain aspect ratio */
+            max-height: 300px; /* Limit max height to 300px */
             transition: transform 0.3s; /* Transition for rotation */
             /* Make the image center itself */
             left: 0%;
