@@ -5,7 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Time & Background</title>
     <style>
-        /* Your existing CSS styles */
+        /* Basic styling */
+        body {
+            transition: background-image 0.5s ease-in-out;
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: white;
+        }
+
+        .dynamic-text, #random-message {
+            transition: color 0.3s;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 25px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 25px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 5px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Styles for elements */
+        #margin-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #random-image {
+            width: 150px;
+            height: auto;
+            transition: opacity 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body id="bg">
@@ -17,14 +84,12 @@
     <div id="margin-container">
         <div id="date" class="dynamic-text"></div>
         <div id="time" class="dynamic-text"></div>
-        <div id="random-message"></div> <!-- Random message element -->
-        <img id="random-image" src="" alt="Random Image">
+        <div id="random-message" class="dynamic-text"></div>
+        <img id="random-image" src="" alt="Random Image" />
     </div>
-    <script>
-        const angles = [20, 30, 10, 50, 60, 0, -10, -20, -30, -50, -60];
-        let isWhiteText = true;
 
-        // JavaScript array of messages
+    <script>
+        // Variables for messages, images, angles, and state
         const messages = [
             "Did you know this is created by a 16-year-old boy with ChatGPT?",
             "This background changes according to time!",
@@ -33,20 +98,51 @@
             "What's the time, bro?",
             "One Piece is real"
         ];
-
-        // JavaScript array of image paths
+        
         const images = [
-            'static/popup_images/image1.jpg', // Replace with actual image paths
-            'static/popup_images/image2.jpg',
-            'static/popup_images/image3.jpg'
+             "static/popup_images/image_2024-06-05_163450069.png",
+             "static/popup_images/image_2024-06-05_163530254.png",
+             "static/popup_images/image_2024-06-05_163806422.png",
+             "static/popup_images/image_2024-06-06_155440849.png",
+             "static/popup_images/image_2024-06-06_155251015.png",
+             "static/popup_images/image_2024-06-06_155726876.png",
+             "static/popup_images/image_2024-06-06_155558738.png",
+             "static/popup_images/image_2024-06-06_155850163.png",
+             "static/popup_images/image_2024-06-06_160015779.png",
+             "static/popup_images/image.png",
+             "static/popup_images/image1.png",
+             "static/popup_images/pngaaa.com-170036.png",
+             "static/popup_images/pngaaa.com-611347.png",
+             "static/popup_images/pngaaa.com-611375.png",
+             "static/popup_images/pngaaa.com-611387.png",
+             "static/popup_images/pngaaa.com-1233548.png",
+             "static/popup_images/pngaaa.com-1233502.png",
+             "static/popup_images/pngaaa.com-1233652.png",
+             "static/popup_images/pngaaa.com-1233599.png",
+             "static/popup_images/pngaaa.com-4309208.png",
+             "static/popup_images/pngaaa.com-4309194.png"
         ];
+
+
+        let isWhiteText = true;
+
+        // Preload images
+        images.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
 
         function setRandomMessageAndImage() {
             const randomMessage = messages[Math.floor(Math.random() * messages.length)];
             document.getElementById('random-message').innerText = randomMessage;
 
             const randomImage = images[Math.floor(Math.random() * images.length)];
-            document.getElementById('random-image').src = randomImage;
+            const imageElement = document.getElementById('random-image');
+            imageElement.style.opacity = 0;
+            setTimeout(() => {
+                imageElement.src = randomImage;
+                imageElement.style.opacity = 1;
+            }, 200);
         }
 
         function updateTime() {
@@ -59,13 +155,13 @@
 
             let imageUrl;
             if (now.getHours() >= 6 && now.getHours() < 12) {
-                imageUrl = 'static/morning.jpg';  // Morning image path
+                imageUrl = 'static/morning.jpg';
             } else if (now.getHours() >= 12 && now.getHours() < 16) {
-                imageUrl = 'static/afternoon.jpg';  // Afternoon image path
+                imageUrl = 'static/afternoon.jpg';
             } else if (now.getHours() >= 16 && now.getHours() < 20) {
-                imageUrl = 'static/evening.jpg';  // Evening image path
+                imageUrl = 'static/evening.jpg';
             } else {
-                imageUrl = 'static/night.jpg';  // Night image path
+                imageUrl = 'static/night.jpg';
             }
             document.body.style.backgroundImage = `url(${imageUrl})`;
         }
@@ -81,14 +177,13 @@
             document.getElementById('mode-label').style.color = newColor;
         }
 
+        // Initialize and set intervals
         updateTime();
         setRandomMessageAndImage();
 
-        // Set intervals for updating time and random message/image
-        setInterval(updateTime, 1000); // Update time and background every second
-        setInterval(setRandomMessageAndImage, 10000); // Update message and image every 10 seconds
+        setInterval(updateTime, 1000);
+        setInterval(setRandomMessageAndImage, 10000);
 
-        // Event listener for toggling text color
         document.getElementById('toggle-button').addEventListener('change', toggleTextColor);
     </script>
 </body>
