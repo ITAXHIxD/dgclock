@@ -92,11 +92,11 @@
 
         #random-image {
             position: absolute;
-            max-width: 100px;
-            max-height: 100px;
+            max-width: 1020px;
+            max-height: 760px;
             transition: transform 0.3s; /* Transition for rotation */
             bottom: 10px; /* Position it towards the bottom */
-            left: 50%; /* Center it horizontally */
+            left: 5%; /* Center it horizontally */
             transform: translateX(-50%); /* Adjust for centering */
         }
     </style>
@@ -146,7 +146,7 @@
             const marginContainer = document.getElementById('margin-container');
             const containerWidth = marginContainer.clientWidth;
 
-            const randomX = Math.random() * (containerWidth - 100); // Adjust width for positioning
+            const randomX = Math.random() * (containerWidth - 1000); // Adjust width for positioning
             const randomAngle = angles[Math.floor(Math.random() * angles.length)];
 
             randomImageElement.style.left = `${randomX}px`;
@@ -192,7 +192,7 @@
         setRandomMessageAndImage();
 
         setInterval(updateTime, 1000);
-        setInterval(setRandomMessageAndImage, 10000);
+        setInterval(setRandomMessageAndImage,100000);
 
         // Event listener for toggling text color
         document.getElementById('toggle-button').addEventListener('change', toggleTextColor);
