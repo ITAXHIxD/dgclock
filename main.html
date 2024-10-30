@@ -73,20 +73,33 @@
             height: auto;
             transition: opacity 0.3s ease-in-out;
         }
-    </style>
-</head>
+        #margin-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .dark-mode-container {  /* New container for dark mode elements */
+        display: flex;
+        justify-content: center;
+    }
+
+    #random-image {
+        position: absolute;
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+
 <body id="bg">
-    <label id="mode-label">Dark Mode OFF</label>
-    <label class="switch">
-        <input type="checkbox" id="toggle-button">
-        <span class="slider"></span>
-    </label>
-    <div id="margin-container">
-        <div id="date" class="dynamic-text"></div>
-        <div id="time" class="dynamic-text"></div>
-        <div id="random-message" class="dynamic-text"></div>
-        <img id="random-image" src="" alt="Random Image" />
+    <div class="dark-mode-container">  <label id="mode-label">Dark Mode OFF</label>
+        <label class="switch">
+            <input type="checkbox" id="toggle-button">
+            <span class="slider"></span>
+        </label>
     </div>
+    <div id="margin-container">
+        </div>
+    </body>
     <script>
         const angles = [20, 30, 10, 50, 60, 0, -10, -20, -30, -50, -60];
         let isWhiteText = true;
@@ -136,14 +149,17 @@
             const randomImageElement = document.getElementById('random-image');
             randomImageElement.src = randomImage;
     
-            // Position and rotate image randomly within the margin container
+            // Get the container's dimensions to keep the image within bounds
             const marginContainer = document.getElementById('margin-container');
-            const containerWidth = marginContainer.clientWidth - 100; // Account for image width
-            const containerHeight = marginContainer.clientHeight - 100; // Account for image height
-            const randomX = Math.floor(Math.random() * containerWidth);
-            const randomY = Math.floor(Math.random() * containerHeight);
+            const containerWidth = marginContainer.clientWidth;
+            const containerHeight = marginContainer.clientHeight;
+    
+            // Random position within the container, keeping the image fully visible
+            const randomX = Math.random() * (containerWidth - 100); // Subtract image width (100px) to fit
+            const randomY = Math.random() * (containerHeight - 100); // Subtract image height (100px) to fit
             const randomAngle = angles[Math.floor(Math.random() * angles.length)];
     
+            randomImageElement.style.position = 'absolute';
             randomImageElement.style.left = `${randomX}px`;
             randomImageElement.style.top = `${randomY}px`;
             randomImageElement.style.transform = `rotate(${randomAngle}deg)`;
@@ -190,6 +206,7 @@
     
         // Event listener for toggling text color
         document.getElementById('toggle-button').addEventListener('change', toggleTextColor);
-    </script>    
+    </script>
+      
 </body>
 </html>
