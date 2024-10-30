@@ -103,12 +103,14 @@
 
         #random-image {
             position: absolute; /* Position it absolutely to the viewport */
-            width: 300px; /* Set a fixed width for the image */
-            height: auto; /* Maintain aspect ratio */
-            max-height: 300px; /* Limit max height to 300px */
+            width: auto; /* Keep the width automatic */
+            height: auto; /* Keep the height automatic */
+            max-width: 300px; /* Set a maximum width for the image */
+            max-height: 300px; /* Set a maximum height for the image */
             transition: transform 0.3s; /* Transition for rotation */
             z-index: -1; /* Keep image behind text */
         }
+
 
     </style>
 </head>
