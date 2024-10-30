@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Time & Background</title>
+    <style>
+        /* Your existing CSS styles */
+    </style>
+</head>
+<body id="bg">
+    <label id="mode-label">Dark Mode OFF</label>
+    <label class="switch">
+        <input type="checkbox" id="toggle-button">
+        <span class="slider"></span>
+    </label>
+    <div id="margin-container">
+        <div id="date" class="dynamic-text"></div>
+        <div id="time" class="dynamic-text"></div>
+        <div id="random-message"></div> <!-- Random message element -->
+        <img id="random-image" src="" alt="Random Image">
+    </div>
+    <script>
+        const angles = [20, 30, 10, 50, 60, 0, -10, -20, -30, -50, -60];
+        let isWhiteText = true;
+
+        // JavaScript array of messages
+        const messages = [
+            "Did you know this is created by a 16-year-old boy with ChatGPT?",
+            "This background changes according to time!",
+            "Refreshing the website will give a different popup image!",
+            "Is this website useful?",
+            "What's the time, bro?",
+            "One Piece is real"
+        ];
+
+        // JavaScript array of image paths
+        const images = [
+            'static/popup_images/image1.jpg', // Replace with actual image paths
+            'static/popup_images/image2.jpg',
+            'static/popup_images/image3.jpg'
+        ];
+
+        function setRandomMessageAndImage() {
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            document.getElementById('random-message').innerText = randomMessage;
+
+            const randomImage = images[Math.floor(Math.random() * images.length)];
+            document.getElementById('random-image').src = randomImage;
+        }
+
+        function updateTime() {
+            const now = new Date();
+            const dayOfWeek = now.toLocaleDateString('en', { weekday: 'long' });
+            const dateString = `${dayOfWeek}, ${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`;
+            const timeString = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+            document.getElementById('date').innerText = dateString;
+            document.getElementById('time').innerText = timeString;
+
+            let imageUrl;
+            if (now.getHours() >= 6 && now.getHours() < 12) {
+                imageUrl = 'static/morning.jpg';  // Morning image path
+            } else if (now.getHours() >= 12 && now.getHours() < 16) {
+                imageUrl = 'static/afternoon.jpg';  // Afternoon image path
+            } else if (now.getHours() >= 16 && now.getHours() < 20) {
+                imageUrl = 'static/evening.jpg';  // Evening image path
+            } else {
+                imageUrl = 'static/night.jpg';  // Night image path
+            }
+            document.body.style.backgroundImage = `url(${imageUrl})`;
+        }
+
+        function toggleTextColor() {
+            const textElements = document.querySelectorAll('.dynamic-text, #random-message');
+            isWhiteText = !isWhiteText;
+            const newColor = isWhiteText ? 'white' : 'black';
+            textElements.forEach(element => {
+                element.style.color = newColor;
+            });
+            document.getElementById('mode-label').innerText = isWhiteText ? 'Dark Mode OFF' : 'Dark Mode ON';
+            document.getElementById('mode-label').style.color = newColor;
+        }
+
+        updateTime();
+        setRandomMessageAndImage();
+
+        // Set intervals for updating time and random message/image
+        setInterval(updateTime, 1000); // Update time and background every second
+        setInterval(setRandomMessageAndImage, 10000); // Update message and image every 10 seconds
+
+        // Event listener for toggling text color
+        document.getElementById('toggle-button').addEventListener('change', toggleTextColor);
+    </script>
+</body>
+</html>
